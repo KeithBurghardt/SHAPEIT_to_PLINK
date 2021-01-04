@@ -167,7 +167,7 @@ def Convert_impute2_to_PEDMAP(
 			# write the .PED file
 			currentIndiv = 0
 			while currentIndiv < numIndivs:
-				ped_file.write(str.join('\t', pedInfo[(block - 1) * (fieldsToRead / 2) + currentIndiv] + haps_tr[currentIndiv]) + '\n')
+				ped_file.write(str.join('\t', pedInfo[(block - 1) * int(fieldsToRead / 2) + currentIndiv] + haps_tr[currentIndiv]) + '\n')
 				currentIndiv += 1
 
 			haplotypes.close()
@@ -219,7 +219,7 @@ def Convert_impute2_to_PEDMAP(
 			# write the .PED file
 			currentIndiv = 0
 			while currentIndiv < numIndivs:
-				ped_file.write(str.join('\t', pedInfo[(block - 1) * (fieldsToRead / 2) + currentIndiv] + haps_tr[currentIndiv]) + '\n')
+				ped_file.write(str.join('\t', pedInfo[(block - 1) * int(fieldsToRead / 2) + currentIndiv] + haps_tr[currentIndiv]) + '\n')
 				currentIndiv += 1
 
 			haplotypes.close()
