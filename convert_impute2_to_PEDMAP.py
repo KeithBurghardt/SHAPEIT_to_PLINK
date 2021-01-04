@@ -1,8 +1,11 @@
+
+"""
+Updated for Python3 by Keith Burghardt on Jan. 4, 2021
+"""
 import gzip
 import os
 import sys
 import time
-
 def Convert_impute2_to_PEDMAP(
 	chromosome = None, 
 	legend_file = None, 
@@ -11,6 +14,8 @@ def Convert_impute2_to_PEDMAP(
 	sample_names_filename = None,
 	family_id = None,
 	family_id_filename = None,
+	missing_id = None,
+	missing_id_filename = None,
 	p_id = None,
 	p_id_filename = None,
 	m_id = None,
@@ -32,7 +37,7 @@ def Convert_impute2_to_PEDMAP(
 	SNPs = len(legend)
 
 	# generating the .MAP file
-	print "\nsaving .MAP file..."
+	print("\nsaving .MAP file...")
 
 	map_file = open(map_filename, 'w')
 
@@ -41,27 +46,29 @@ def Convert_impute2_to_PEDMAP(
 
 	map_file.close()
 
-	print "...done saving .MAP file"
+	print("...done saving .MAP file")
 
 	# generating the .PED file
-	print "\nsaving .PED file..."
+	print("\nsaving .PED file...")
 
 	haplotypes = open(haplotypes_file, 'r')
 	totalIndivs = len(haplotypes.readline().replace('\n', '').split()) / 2
 	haplotypes.seek(0)
 
+        #ID_1 ID_2 missing father mother sex plink_pheno
+        #0 0 0 D D D B
 	# generating the pedigree info from .sample file
 	pedInfo = []
 	currentIndiv = 0
 	while currentIndiv < totalIndivs:
-		pedInfo.append([family_id[currentIndiv], sample_names[currentIndiv], p_id[currentIndiv], m_id[currentIndiv], gender[currentIndiv], pheno[currentIndiv]]) 
+		pedInfo.append([family_id[currentIndiv], sample_names[currentIndiv],missing_id[currentIndiv], p_id[currentIndiv], m_id[currentIndiv], gender[currentIndiv], pheno[currentIndiv]]) #missing_id[currentIndiv],
 		currentIndiv += 1
 
 	# break the file into parts containing fieldsToRead columns, i.e., fieldsToRead/2 individuals
 	fieldsToRead = 100
 
 	if totalIndivs < (fieldsToRead / 2):	# if sample size is small...
-		print "processing all individuals..."
+		print("processing all individuals...")
 		ped_file = open(ped_filename, 'w')
 
 		H = haplotypes.readlines()
@@ -117,7 +124,7 @@ def Convert_impute2_to_PEDMAP(
 
 		block = 1
 		while block * (fieldsToRead / 2) < totalIndivs:
-			print "processing individuals", ((block - 1) * (fieldsToRead / 2) + 1), "to", (block * (fieldsToRead / 2)), "..."
+			print("processing individuals", ((block - 1) * (fieldsToRead / 2) + 1), "to", (block * (fieldsToRead / 2)), "...")
 			os.system("cut -d' ' -f" + str((block - 1) * fieldsToRead + 1) + "-" + str(block * fieldsToRead) + " " + haplotypes_file + " > " + haplotypes_file_temp)
 
 			haplotypes = open(haplotypes_file_temp, 'r')
@@ -170,7 +177,7 @@ def Convert_impute2_to_PEDMAP(
 
 		# check for the existence of any remaining non-processed individuals
 		if ((block - 1) * (fieldsToRead / 2) + 1) < totalIndivs:
-			print "processing the remaining individuals..."
+			print("processing the remaining individuals...")
 			os.system("cut -d' ' -f" + str((block - 1) * fieldsToRead + 1) + "- " + haplotypes_file + " > " + haplotypes_file_temp)
 
 			haplotypes = open(haplotypes_file_temp, 'r')
@@ -222,7 +229,7 @@ def Convert_impute2_to_PEDMAP(
 		os.system("rm " + haplotypes_file_temp)	# deleting the temporary file
 		ped_file.close()
 
-	print "...done saving .PED file"
+	print("...done saving .PED file")
 
 	return (ped_filename, map_filename)
 
@@ -230,12 +237,12 @@ def Convert_impute2_to_PEDMAP(
 
 # check for correct number of arguments 
 if (len(sys.argv) < 2 or len(sys.argv) > 6):
-	print 'ERROR: invalid input parameters'
-	print 'input files in IMPUTE2 format: {IMPUTE.haps} {IMPUTE.legend}'
-	print 'input files in SHAPEIT format: {SHAPEIT.sample}'
-	print 'output files PED/MAP format: {PEDMAP}'
-	print 'NOTE: input SHAPEIT file can be uncompressed (.sample) or gzip-compressed (.sample.gz)'
-	print 'USAGE: convert_impute2_to_PEDMAP.py {IMPUTE.haps} {IMPUTE.legend} {SHAPEIT.sample} {PEDMAP} {chromosome#}'
+	print('ERROR: invalid input parameters')
+	print('input files in IMPUTE2 format: {IMPUTE.haps} {IMPUTE.legend}')
+	print('input files in SHAPEIT format: {SHAPEIT.sample}')
+	print('output files PED/MAP format: {PEDMAP}')
+	print('NOTE: input SHAPEIT file can be uncompressed (.sample) or gzip-compressed (.sample.gz)')
+	print('USAGE: convert_impute2_to_PEDMAP.py {IMPUTE.haps} {IMPUTE.legend} {SHAPEIT.sample} {PEDMAP} {chromosome#}')
 	quit()
 
 # read sample information from the original SHAPEIT2 .sample file
@@ -248,6 +255,7 @@ else:
 # parse the result into separate variables
 sample_names = [x[1] for x in sample_info]
 family_id = [x[0] for x in sample_info]
+missing_id = [x[2] for x in sample_info]
 p_id = [x[3] for x in sample_info]
 m_id = [x[4] for x in sample_info]
 gender = [x[5] for x in sample_info]
@@ -273,5 +281,6 @@ returned = Convert_impute2_to_PEDMAP(
 	)
 
 if returned:
-	print 'Method returned:'
-	print str(returned)
+	print('Method returned:')
+	print(str(returned))
+
