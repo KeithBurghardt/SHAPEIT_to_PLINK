@@ -1,3 +1,4 @@
+# Keith Burghardt: UPDATED FOR PYTHON3
 ## Convert phased genotype data from SHAPEIT2 format to PLINK format (plain text)
 
 ### General info
