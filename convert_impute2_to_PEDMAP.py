@@ -1,11 +1,9 @@
 
-"""
-Updated for Python3 by Keith Burghardt on Jan. 4, 2021
-"""
 import gzip
 import os
 import sys
 import time
+
 def Convert_impute2_to_PEDMAP(
 	chromosome = None, 
 	legend_file = None, 
@@ -14,8 +12,8 @@ def Convert_impute2_to_PEDMAP(
 	sample_names_filename = None,
 	family_id = None,
 	family_id_filename = None,
-	missing_id = None,
-	missing_id_filename = None,
+	#missing_id = None,
+	#missing_id_filename = None,
 	p_id = None,
 	p_id_filename = None,
 	m_id = None,
@@ -61,7 +59,7 @@ def Convert_impute2_to_PEDMAP(
 	pedInfo = []
 	currentIndiv = 0
 	while currentIndiv < totalIndivs:
-		pedInfo.append([family_id[currentIndiv], sample_names[currentIndiv],missing_id[currentIndiv], p_id[currentIndiv], m_id[currentIndiv], gender[currentIndiv], pheno[currentIndiv]]) #missing_id[currentIndiv],
+		pedInfo.append([family_id[currentIndiv], sample_names[currentIndiv], p_id[currentIndiv], m_id[currentIndiv], gender[currentIndiv], pheno[currentIndiv]]) #missing_id[currentIndiv],
 		currentIndiv += 1
 
 	# break the file into parts containing fieldsToRead columns, i.e., fieldsToRead/2 individuals
@@ -255,7 +253,7 @@ else:
 # parse the result into separate variables
 sample_names = [x[1] for x in sample_info]
 family_id = [x[0] for x in sample_info]
-missing_id = [x[2] for x in sample_info]
+#missing_id = [x[2] for x in sample_info]
 p_id = [x[3] for x in sample_info]
 m_id = [x[4] for x in sample_info]
 gender = [x[5] for x in sample_info]
