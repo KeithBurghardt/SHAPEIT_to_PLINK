@@ -25,15 +25,19 @@ http://www.opensource.org/licenses/BSD-2-Clause
 Modified by Soheil Baharian on March 5, 2014
 """
 
+"""
+Updated for Python3 by Keith Burghardt on Jan. 4, 2021
+"""
+
 import gzip
 import sys
 
 if (len(sys.argv) < 2 or len(sys.argv) > 6):
-	print 'ERROR: invalid input parameters'
-	print 'input files in SHAPEIT2 format: {SHAPEIT.haps} {SHAPEIT.sample}'
-	print 'output files in IMPUTE2 format: {IMPUTE.haps} {IMPUTE.legend} {IMPUTE.sample}'
-	print 'NOTE: input files can be uncompressed or gzip-compressed (.gz)'
-	print 'USAGE: convert_shapeit2_to_impute2.py {SHAPEIT.haps} {SHAPEIT.sample} {IMPUTE.haps} {IMPUTE.legend} {IMPUTE.sample}'
+	print('ERROR: invalid input parameters')
+	print('input files in SHAPEIT2 format: {SHAPEIT.haps} {SHAPEIT.sample}')
+	print('output files in IMPUTE2 format: {IMPUTE.haps} {IMPUTE.legend} {IMPUTE.sample}')
+	print('NOTE: input files can be uncompressed or gzip-compressed (.gz)')
+	print('USAGE: convert_shapeit2_to_impute2.py {SHAPEIT.haps} {SHAPEIT.sample} {IMPUTE.haps} {IMPUTE.legend} {IMPUTE.sample}')
 	quit()
 
 input_haps_filename = sys.argv[1]
@@ -42,15 +46,15 @@ output_haps_filename = sys.argv[3]
 output_legend_filename = sys.argv[4]
 output_sample_filename = sys.argv[5]
 
-print '\n'
-print 'converting'
-print '   ' + input_haps_filename
-print '   ' + input_sample_filename
-print 'from SHAPEIT2 format to'
-print '   ' + output_haps_filename
-print '   ' + output_legend_filename
-print '   ' + output_sample_filename
-print 'in IMPUTE2 format.'
+print('\n')
+print('converting')
+print('   ' + input_haps_filename)
+print('   ' + input_sample_filename)
+print('from SHAPEIT2 format to')
+print('   ' + output_haps_filename)
+print('   ' + output_legend_filename)
+print('   ' + output_sample_filename)
+print('in IMPUTE2 format.')
 
 # check for gzip-compressed .haps input file
 if input_haps_filename.lower().endswith('.gz'):
@@ -90,8 +94,9 @@ line_counter = 0
 for input_haps_line in input_haps_file:
 	line_counter += 1
 	if line_counter % 10000 == 0:
-		print 'SNPs:', line_counter
-	input_haps_s = input_haps_line.replace('\n', '').split()
+		print('SNPs:', line_counter)
+	#print(input_haps_line)
+	input_haps_s = str(input_haps_line).replace('\n', '').split()
 
 	legend_to_print = [input_haps_s[1], input_haps_s[2], input_haps_s[3], input_haps_s[4]]
 	haps_to_print = input_haps_s[5:]
@@ -108,7 +113,8 @@ output_legend_file.close()
 input_haps_file.close()
 input_sample_file.close()
 
-print 'Output 1:', output_haps_filename
-print 'Output 2:', output_legend_filename
-print 'Output 3:', output_sample_filename
-print '\n'
+print('Output 1:', output_haps_filename)
+print('Output 2:', output_legend_filename)
+print('Output 3:', output_sample_filename)
+print('\n')
+
